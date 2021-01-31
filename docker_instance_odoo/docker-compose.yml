@@ -1,0 +1,45 @@
+version: '2'
+services:
+  db:
+    image: postgres:12
+    container_name: yoytec_server_db
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=produccion
+    restart: always             # run as a service
+    volumes:
+        - ./postgresql:/var/lib/postgresql/data
+
+  odoo:
+    build: ./odoo
+    depends_on:
+      - db
+    ports:
+      - "30001:8069"
+      - "30002:8072"
+    tty: true
+    environment:
+      - PGHOST=produccion
+      - PGPORT=5432
+      - PGDATABASE=produccion
+      - PGUSER=odoo
+      - PGPASSWORD=odoo
+      - PSQL_VERSION=12
+      - DB_NAME=produccion
+      - DB_HOST=yoytec_server_db
+      - ODOO_CONFIG_FILE=/mnt/odoo.conf
+    command: /entry_point.py
+    volumes:
+      - ./addons:/home/odoo/instance/extra_addons/
+      - ./filestore:/home/odoo/.local/share/Odoo/filestore
+      - ./etc/:/mnt
+      - ./supervisor_cong/:/etc/supersor/conf.d
+    restart: always
+
+  nginx:
+    build: ./nginx
+    ports:
+    - "8080:80"
+    depends_on:
+    - odoo
