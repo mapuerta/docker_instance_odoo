@@ -1,6 +1,7 @@
 FROM yoytec-odoo120:latest
 COPY scripts/getaddons.py /home/odoo/getaddons.py
 COPY scripts/entry_point.py /entry_point.py
+RUN chmod +x /entry_point.py
 
 VOLUME ["/var/log/supervisor", "/home/odoo/.local/share/Odoo", "/tmp", "/home/odoo/.ssh"]
 

@@ -16,8 +16,8 @@ services:
     depends_on:
       - db
     ports:
-      - "30001:8069"
-      - "30002:8072"
+      - "30001-30003:8069"
+      - "30004-30006:8072"
     tty: true
     environment:
       - PGHOST=produccion
@@ -34,7 +34,7 @@ services:
       - ./addons:/home/odoo/instance/extra_addons/
       - ./filestore:/home/odoo/.local/share/Odoo/filestore
       - ./etc/:/mnt
-      - ./supervisor_cong/:/etc/supersor/conf.d
+      - ./supervisor_conf/:/etc/supersor/conf.d
     restart: always
 
   nginx:
