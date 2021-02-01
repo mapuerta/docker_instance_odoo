@@ -34,7 +34,6 @@ services:
       - ./addons:/home/odoo/instance/extra_addons/
       - ./filestore:/home/odoo/.local/share/Odoo/filestore
       - ./etc/:/mnt
-      - ./supervisor_conf/:/etc/supersor/conf.d
     restart: always
 
   nginx:
