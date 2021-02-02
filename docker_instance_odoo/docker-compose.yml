@@ -37,8 +37,10 @@ services:
     restart: always
 
   nginx:
-    build: ./nginx
+    image: nginx
     ports:
-    - "38080:80"
+    - "38080:8080"
     depends_on:
     - odoo
+    volumes:
+        - ./conf:/etc/nginx/conf.d/
