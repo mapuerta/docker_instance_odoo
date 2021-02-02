@@ -63,7 +63,7 @@ services:
     restart: always
   odoo3:
     build: ./odoo
-    container_name: odoo_yoytec_2
+    container_name: odoo_yoytec_3
     depends_on:
       - db
     ports:
