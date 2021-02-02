@@ -11,64 +11,13 @@ services:
     volumes:
         - ./postgresql:/var/lib/postgresql/data
 
-  odoo1:
+  odoo:
     build: ./odoo
-    container_name: odoo_yoytec_1
     depends_on:
       - db
-    ports:
-      - "30001:8069"
-      - "30002:8072"
-    tty: true
-    environment:
-      - PGHOST=produccion
-      - PGPORT=5432
-      - PGDATABASE=produccion
-      - PGUSER=odoo
-      - PGPASSWORD=odoo
-      - PSQL_VERSION=12
-      - DB_NAME=produccion
-      - DB_HOST=yoytec_server_db
-      - ODOO_CONFIG_FILE=/mnt/odoo.conf
-    command: /entry_point.py
-    volumes:
-      - ./addons:/home/odoo/instance/extra_addons/
-      - ./filestore:/home/odoo/.local/share/Odoo/filestore
-      - ./etc/:/mnt
-    restart: always
-  odoo2:
-    build: ./odoo
-    container_name: odoo_yoytec_2
-    depends_on:
-      - db
-    ports:
-      - "30003:8069"
-      - "30004:8072"
-    tty: true
-    environment:
-      - PGHOST=produccion
-      - PGPORT=5432
-      - PGDATABASE=produccion
-      - PGUSER=odoo
-      - PGPASSWORD=odoo
-      - PSQL_VERSION=12
-      - DB_NAME=produccion
-      - DB_HOST=yoytec_server_db
-      - ODOO_CONFIG_FILE=/mnt/odoo.conf
-    command: /entry_point.py
-    volumes:
-      - ./addons:/home/odoo/instance/extra_addons/
-      - ./filestore:/home/odoo/.local/share/Odoo/filestore
-      - ./etc/:/mnt
-    restart: always
-  odoo3:
-    build: ./odoo
-    container_name: odoo_yoytec_3
-    depends_on:
-      - db
-    ports:
-      - "30005:8069"
-      - "30006:8072"
+    expose:
+      - "8069"
+      - "8072"
     tty: true
     environment:
       - PGHOST=produccion
@@ -92,6 +41,4 @@ services:
     ports:
     - "38080:80"
     depends_on:
-    - odoo1
-    - odoo2
-    - odoo3
+    - odoo
