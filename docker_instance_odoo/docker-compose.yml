@@ -92,4 +92,6 @@ services:
     ports:
     - "38080:80"
     depends_on:
-    - odoo
+    - odoo1
+    - odoo2
+    - odoo3
