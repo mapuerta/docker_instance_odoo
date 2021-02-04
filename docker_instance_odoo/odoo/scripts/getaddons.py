@@ -3,6 +3,7 @@ import ast
 import os
 import sys
 import fileinput
+from os import getenv
 
 MANIFEST_FILES = ['__odoo__.py', '__openerp__.py', '__terp__.py', '__manifest__.py']
 
