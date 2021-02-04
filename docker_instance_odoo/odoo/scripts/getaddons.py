@@ -6,6 +6,15 @@ import fileinput
 
 MANIFEST_FILES = ['__odoo__.py', '__openerp__.py', '__terp__.py', '__manifest__.py']
 
+USER_NAME = getenv('ODOO_USER') and getenv('ODOO_USER') or 'odoo'
+
+FILESTORE_PATH = getenv('ODOO_FILESTORE_PATH') \
+    and getenv('ODOO_FILESTORE_PATH') \
+    or '/home/%s/.local/share/Odoo/filestore' % USER_NAME
+
+CONFIGFILE_PATH = getenv('ODOO_CONFIG_FILE') \
+    and getenv('ODOO_CONFIG_FILE') \
+    or '/home/%s/.openerp_serverrc' % USER_NAME
 
 def is_module(path):
     """return False if the path doesn't contain an odoo module, and the full
@@ -248,7 +257,7 @@ def main():
     if enterprise_path:
         res.remove(enterprise_path[0])
     addons_path = ",".join(enterprise_path + [args.odoo_addons] + res)
-    for line in fileinput.input('/home/odoo/.openerp_serverrc', inplace=True):
+    for line in fileinput.input(CONFIGFILE_PATH, inplace=True):
         if 'addons_path' in line:
             parts = line.split('=')
             new_str = '{field} = {addons}'.format(field=parts[0].strip(), addons=addons_path)
