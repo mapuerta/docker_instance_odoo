@@ -44,3 +44,20 @@ services:
     - odoo
     volumes:
         - ./conf:/etc/nginx/conf.d/
+  netdata:
+    image: netdata/netdata:v1.19.0
+    container_name: netdata_status
+    restart: always
+    expose:
+      - "19999"
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - netdata-etc:/etc/netdata
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
