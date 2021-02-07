@@ -50,8 +50,8 @@ services:
     image: netdata/netdata
     container_name: netdata_status
     restart: always
-    expose:
-      - "19999"
+    ports:
+      - "19999:19999"
     volumes:
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro
