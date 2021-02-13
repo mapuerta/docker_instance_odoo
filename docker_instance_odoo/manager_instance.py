@@ -20,12 +20,9 @@ parser.add_argument("-s", "--dbhost", type=str, help="Server postgresql")
 args = parser.parse_args()
 
 
-def _spawn(cmd, cpu_limit=None, shell=False, env=None, cwd=None):
-    p = subprocess.Popen(
-        cmd, shell=shell, env=env,
-        close_fds=False, cwd=cwd)
-    return p.pid
-
+def _spawn(cmd):
+    print(cmd)
+    subprocess.call(cmd)
 
 def tar_name_list(fobject):
     values = []
