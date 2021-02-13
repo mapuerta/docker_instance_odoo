@@ -1,5 +1,6 @@
 FROM yoytec-odoo120:latest
 COPY scripts/getaddons.py /home/odoo/getaddons.py
+COPY scripts/install_deps.py /tmp/install_deps.py
 COPY supervisor_conf/odoo_service.conf /etc/supervisor/conf.d/odoo_service.conf
 RUN python /tmp/install_deps.py
 RUN chmod +x /entry_point.py

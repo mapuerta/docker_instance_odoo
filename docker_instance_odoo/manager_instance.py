@@ -22,7 +22,6 @@ args = parser.parse_args()
 
 def _spawn(cmd):
     cmd = " ".join(cmd)
-    print(cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     out, err = p.communicate()
     print(out)
