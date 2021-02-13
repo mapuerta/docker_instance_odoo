@@ -89,7 +89,7 @@ def update_instance():
         _spawn(cmd)
 
 
-def restore_db(self):
+def restore_db():
     tmp_path = tempfile.TemporaryDirectory().name
     cmd1 = ['docker-compose', '-f', args.file_yml, 'stop', 'odoo']
     file_descompress = extrac_file(args.restoredb, tmp_path)
