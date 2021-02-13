@@ -16,7 +16,7 @@ parser.add_argument("--restoredb", action='append', help="Restore backup")
 parser.add_argument("--update", help="Update instance")
 parser.add_argument("--rebuild", help="Rebuild instance")
 parser.add_argument("-d", "--dbname", type=str, help="Database name")
-parser.add_argument("-h", "--host", type=str, help="Database name")
+parser.add_argument("-s", "--host", type=str, help="Database name")
 args = parser.parse_args()
 
 
