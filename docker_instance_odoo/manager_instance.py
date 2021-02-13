@@ -16,7 +16,7 @@ parser.add_argument("--restoredb", action='append', help="Restore backup")
 parser.add_argument("--update", help="Update instance")
 parser.add_argument("--rebuild", help="Rebuild instance")
 parser.add_argument("-d", "--dbname", type=str, help="Database name")
-parser.add_argument("-s", "--host", type=str, help="Database name")
+parser.add_argument("-s", "--dbhost", type=str, help="Server postgresql")
 args = parser.parse_args()
 
 
@@ -96,8 +96,8 @@ def restore_db(self):
     file_sql = path.join(tmp_path, file_sql)
     file_store = path.join(tmp_path, filestore)
     filestore_path = path.join(args.worker_dir, 'filestore')
-    cmd2 = ['dropdb', '-h', args.hostname, '-u', 'odoo', args.dbname]
-    cmd3 = ['psql', '-h', args.hostname, '-d', args.dbname, '-f', file_sql, '-u', 'odoo']
+    cmd2 = ['dropdb', '-h', args.dbhost, '-u', 'odoo', args.dbname]
+    cmd3 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-u', 'odoo']
     cmd4 = ['cp', '-rf', file_store, filestore_path]
     cmd5 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
     for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5]:
