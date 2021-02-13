@@ -62,8 +62,7 @@ def compress_open_file(filename, ext):
 
 def extrac_file(filename, dest_folder):
     result = False
-    support_method = support_method()
-    for ext, method in support_method.items():
+    for ext, method in support_method().items():
         if filename.endswith(ext):
             result = compress_open_file(filename, 'r:'+ext)
             method(filename, dest_folder)
