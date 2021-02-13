@@ -77,9 +77,9 @@ def rebuild_instance():
 
 def update_instance():
     cmd_odoo = '/home/odoo/instance/odoo/odoo-bin -c /mnt/odoo.conf -u all --stop-after-init'
-    cmd1 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctrl stop odoo']
+    cmd1 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl stop odoo']
     cmd2 = ['docker-compose', '-f', args.file_yml, 'exec', '-u', 'odoo', 'odoo', cmd_odoo]
-    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctrl start odoo']
+    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl start odoo']
     for cmd in [cmd1, cmd2, cmd3]:
         _spawn(cmd)
 
