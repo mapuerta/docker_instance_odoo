@@ -57,7 +57,7 @@ def compress_open_file(filename, ext):
         "bz2": tarfile.open,
         "gz": tarfile.open,
     }
-    return ext_open[ext](filename, 'r:'+ext)
+    return ext_open[ext](filename, ext)
 
 
 def extrac_file(filename, dest_folder):
@@ -78,13 +78,10 @@ def rebuild_instance():
 
 def update_instance():
     cmd_odoo = '/home/odoo/instance/odoo/odoo-bin -c /mnt/odoo.conf -u all --stop-after-init'
-    cmd1 = ['docker-compose', '-f', args.file_yml, 'down']
-    cmd2 = ['docker-compose', '-f', args.file_yml, 'up', '-d']
-    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl stop odoo']
-    cmd4 = ['docker-compose', '-f', args.file_yml, 'exec', '-u', 'odoo', 'odoo', cmd_odoo]
-    cmd5 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl start odoo']
-    cmd6 = ['docker-compose', '-f', args.file_yml, 'up', '-d', '--scale', 'odoo=3']
-    for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5, cmd6]:
+    cmd1 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl stop odoo']
+    cmd2 = ['docker-compose', '-f', args.file_yml, 'exec', '-u', 'odoo', 'odoo', cmd_odoo]
+    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl start odoo']
+    for cmd in [cmd1, cmd2, cmd3]:
         _spawn(cmd)
 
 
@@ -95,10 +92,10 @@ def restore_db():
     file_sql = [path.basename(i) for i in file_descompress if i.endswith('.sql')]
     file_sql = file_sql and file_sql[0] or 'database_dump.sql'
     file_sql = path.join(tmp_path, file_sql)
-    file_store = path.join(tmp_path, filestore)
+    file_store = path.join(tmp_path, 'filestore')
     filestore_path = path.join(args.worker_dir, 'filestore')
-    cmd2 = ['dropdb', '-h', args.dbhost, '-u', 'odoo', args.dbname]
-    cmd3 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-u', 'odoo']
+    cmd2 = ['dropdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
+    cmd3 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
     cmd4 = ['cp', '-rf', file_store, filestore_path]
     cmd5 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
     for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5]:
