@@ -64,7 +64,7 @@ def extrac_file(filename, dest_folder):
     result = False
     for ext, method in support_method().items():
         if filename.endswith(ext):
-            result = compress_open_file(filename, 'r:'+ext)
+            result = compress_open_file(filename, ext)
             method(filename, dest_folder)
     return tar_name_list(result)
 

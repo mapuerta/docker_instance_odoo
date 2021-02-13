@@ -6,4 +6,4 @@ db_host=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddre
 workerdir='/home/odoo/docker_instance_odoo/docker_instance_odoo'
 fileyml='${workerdir}/docker-compose.yml'
 
-/usr/bin/manager_instance.py -f ${fileyml} -s ${db_host} -d ${dbname} -w ${workerdir} $@
+python3 /usr/bin/manager_instance.py -f ${fileyml} -s ${db_host} -d ${dbname} -w ${workerdir} $@
