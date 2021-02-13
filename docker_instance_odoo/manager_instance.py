@@ -22,7 +22,9 @@ args = parser.parse_args()
 
 def _spawn(cmd):
     print(cmd)
-    subprocess.call(cmd)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    print(out)
 
 def tar_name_list(fobject):
     values = []
