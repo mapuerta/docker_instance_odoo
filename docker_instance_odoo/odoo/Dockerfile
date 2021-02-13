@@ -1,11 +1,14 @@
 FROM yoytec-odoo120:latest
 COPY scripts/getaddons.py /home/odoo/getaddons.py
-COPY scripts/entry_point.py /entry_point.py
 COPY supervisor_conf/odoo_service.conf /etc/supervisor/conf.d/odoo_service.conf
+RUN python /tmp/install_deps.py
 RUN chmod +x /entry_point.py
 
 VOLUME ["/var/log/supervisor", "/home/odoo/.local/share/Odoo", "/tmp", "/home/odoo/.ssh"]
 
+RUN git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+ENV PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
+RUN clone_oca_dependencies /home/odoo/instance/extra_addons /home/odoo/instance/extra_addons
 ## Expose xmlrpc and longpolling ports
 EXPOSE 8069 8072
 
