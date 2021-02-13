@@ -13,8 +13,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-w", "--worker-dir", required=True, help="worker dir")
 parser.add_argument("-f", "--file_yml", required=True, help="docker-compose.yml")
 parser.add_argument("--restoredb", action='append', help="Restore backup")
-parser.add_argument("--update", help="Update instance")
-parser.add_argument("--rebuild", help="Rebuild instance")
+parser.add_argument("--update", help="Update instance", action="store_true")
+parser.add_argument("--rebuild", help="Rebuild instance", action="store_true")
 parser.add_argument("-d", "--dbname", type=str, help="Database name")
 parser.add_argument("-s", "--dbhost", type=str, help="Server postgresql")
 args = parser.parse_args()
@@ -80,10 +80,13 @@ def rebuild_instance():
 
 def update_instance():
     cmd_odoo = '/home/odoo/instance/odoo/odoo-bin -c /mnt/odoo.conf -u all --stop-after-init'
-    cmd1 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl stop odoo']
-    cmd2 = ['docker-compose', '-f', args.file_yml, 'exec', '-u', 'odoo', 'odoo', cmd_odoo]
-    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl start odoo']
-    for cmd in [cmd1, cmd2, cmd3]:
+    cmd1 = ['docker-compose', '-f', args.file_yml, 'down']
+    cmd2 = ['docker-compose', '-f', args.file_yml, 'up', '-d']
+    cmd3 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl stop odoo']
+    cmd4 = ['docker-compose', '-f', args.file_yml, 'exec', '-u', 'odoo', 'odoo', cmd_odoo]
+    cmd5 = ['docker-compose', '-f', args.file_yml, 'exec', 'odoo', 'supervisorctl start odoo']
+    cmd6 = ['docker-compose', '-f', args.file_yml, 'up', '-d', '--scale', 'odoo=3']
+    for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5, cmd6]:
         _spawn(cmd)
 
 
