@@ -88,7 +88,7 @@ def update_instance():
 def restore_db():
     tmp_path = tempfile.TemporaryDirectory().name
     cmd1 = ['docker-compose', '-f', args.file_yml, 'stop', 'odoo']
-    file_descompress = extrac_file(args.restoredb, tmp_path)
+    file_descompress = extrac_file(args.restoredb[0], tmp_path)
     file_sql = [path.basename(i) for i in file_descompress if i.endswith('.sql')]
     file_sql = file_sql and file_sql[0] or 'database_dump.sql'
     file_sql = path.join(tmp_path, file_sql)
