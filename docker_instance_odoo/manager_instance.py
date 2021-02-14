@@ -57,7 +57,7 @@ def compress_open_file(filename, ext):
         "bz2": tarfile.open,
         "gz": tarfile.open,
     }
-    return ext_open[ext](filename, ext)
+    return ext_open[ext](filename, 'r:'+ext)
 
 
 def extrac_file(filename, dest_folder):
@@ -88,16 +88,17 @@ def update_instance():
 def restore_db():
     tmp_path = tempfile.TemporaryDirectory().name
     cmd1 = ['docker-compose', '-f', args.file_yml, 'stop', 'odoo']
-    file_descompress = extrac_file(args.restoredb[0], tmp_path)
+    file_descompress = extrac_file(args.restoredb, tmp_path)
     file_sql = [path.basename(i) for i in file_descompress if i.endswith('.sql')]
     file_sql = file_sql and file_sql[0] or 'database_dump.sql'
     file_sql = path.join(tmp_path, file_sql)
     file_store = path.join(tmp_path, 'filestore')
     filestore_path = path.join(args.worker_dir, 'filestore')
     cmd2 = ['dropdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
-    cmd3 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
-    cmd4 = ['cp', '-rf', file_store, filestore_path]
-    cmd5 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
+    cmd3 = ['createdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
+    cmd4 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
+    cmd5 = ['cp', '-rf', file_store, filestore_path]
+    cmd6 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
     for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5]:
         _spawn(cmd)
     update_instance()
