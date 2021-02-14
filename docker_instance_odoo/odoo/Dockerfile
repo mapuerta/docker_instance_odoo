@@ -7,7 +7,6 @@ RUN chmod +x /entry_point.py
 VOLUME ["/var/log/supervisor", "/home/odoo/.local/share/Odoo", "/tmp", "/home/odoo/.ssh"]
 
 RUN git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
-ENV PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
 RUN ${HOME}/maintainer-quality-tools/travis/clone_oca_dependencies /home/odoo/instance/extra_addons /home/odoo/instance/extra_addons
 ## Expose xmlrpc and longpolling ports
 EXPOSE 8069 8072
