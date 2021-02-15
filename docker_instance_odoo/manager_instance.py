@@ -7,6 +7,7 @@ import tarfile
 import zipfile
 import tempfile
 from os import path
+import uuid
 
 
 parser = argparse.ArgumentParser()
@@ -86,20 +87,21 @@ def update_instance():
 
 
 def restore_db():
-    tmp_path = tempfile.TemporaryDirectory().name
+    tmp_path = path.join('/tmp', uuid.uuid4().hex)
     cmd1 = ['docker-compose', '-f', args.file_yml, 'stop', 'odoo']
+    cmd2 = ["mkdir", '-p', tmp_path]
     file_descompress = extrac_file(args.restoredb[0], tmp_path)
     file_sql = [path.basename(i) for i in file_descompress if i.endswith('.sql')]
     file_sql = file_sql and file_sql[0] or 'database_dump.sql'
     file_sql = path.join(tmp_path, file_sql)
     file_store = path.join(tmp_path, 'filestore')
     filestore_path = path.join(args.worker_dir, 'filestore')
-    cmd2 = ['dropdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
-    cmd3 = ['createdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
-    cmd4 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
-    cmd5 = ['cp', '-rf', file_store, filestore_path]
-    cmd6 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
-    for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5]:
+    cmd3 = ['dropdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
+    cmd4 = ['createdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
+    cmd5 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
+    cmd6 = ['cp', '-rf', file_store, filestore_path]
+    cmd7 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
+    for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7]:
         _spawn(cmd)
     update_instance()
 
