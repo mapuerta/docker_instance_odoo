@@ -1,6 +1,4 @@
 FROM yoytec-odoo120:latest
-COPY scripts/getaddons.py /home/odoo/getaddons.py
-COPY supervisor_conf/odoo_service.conf /etc/supervisor/conf.d/odoo_service.conf
 RUN chmod +x /entry_point.py
 
 VOLUME ["/var/log/supervisor", "/home/odoo/.local/share/Odoo", "/tmp", "/home/odoo/.ssh"]

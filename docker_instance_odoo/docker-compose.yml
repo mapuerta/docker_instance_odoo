@@ -28,12 +28,9 @@ services:
       - PSQL_VERSION=12
       - DB_NAME=produccion
       - DB_HOST=yoytec_server_db
-      - ODOO_CONFIG_FILE=/mnt/odoo.conf
     command: /entry_point.py
     volumes:
-      - ./addons:/home/odoo/instance/extra_addons/
       - ./filestore:/home/odoo/.local/share/Odoo/filestore
-      - ./etc/:/mnt
     restart: always
 
   nginx:

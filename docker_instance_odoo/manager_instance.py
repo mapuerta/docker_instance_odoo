@@ -97,11 +97,11 @@ def restore_db():
     file_sql = file_sql and file_sql[0] or 'database_dump.sql'
     file_sql = path.join(tmp_path, file_sql)
     file_store = path.join(tmp_path, 'filestore')
-    filestore_path = path.join(args.worker_dir, 'filestore')
+    filestore_path = path.join(args.worker_dir, 'filestore', args.dbname)
     cmd2 = ['dropdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
     cmd3 = ['createdb', '-h', args.dbhost, '-U', 'odoo', args.dbname]
     cmd4 = ['psql', '-h', args.dbhost, '-d', args.dbname, '-f', file_sql, '-U', 'odoo']
-    cmd5 = ['cp', '-rf', file_store, filestore_path]
+    cmd5 = ['cp', '-rf', file_store+'/*', filestore_path]
     cmd6 = ['docker-compose', '-f', args.file_yml, 'start', 'odoo']
     for cmd in [cmd1, cmd2, cmd3, cmd4, cmd5, cmd6]:
         _spawn(cmd)
