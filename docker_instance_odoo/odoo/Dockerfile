@@ -8,6 +8,8 @@ USER root
 RUN git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
 RUN ${HOME}/maintainer-quality-tools/travis/clone_oca_dependencies /home/odoo/instance/extra_addons /home/odoo/instance/extra_addons
 RUN python /home/odoo/getaddons.py /home/odoo/instance/extra_addons
+RUN python3 -m pip install --upgrade pip
+COPY id_rsa /home/odoo/.ssh
 ## Expose xmlrpc and longpolling ports
 EXPOSE 8069 8072
 
