@@ -1,9 +1,10 @@
-FROM yoytec-odoo120:latest
+FROM yoytec-odoo140:latest
 RUN chmod +x /entry_point.py
 
 VOLUME ["/var/log/supervisor", "/home/odoo/.local/share/Odoo", "/tmp", "/home/odoo/.ssh"]
-
+USER odoo
 RUN branchesv pull -p /home/odoo/instance/extra_addons
+USER root
 RUN git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
 RUN ${HOME}/maintainer-quality-tools/travis/clone_oca_dependencies /home/odoo/instance/extra_addons /home/odoo/instance/extra_addons
 RUN python /home/odoo/getaddons.py /home/odoo/instance/extra_addons
